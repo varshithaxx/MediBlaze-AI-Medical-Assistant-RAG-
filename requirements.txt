@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+pydantic
+python-dotenv
+langchain
+langchain-core
+langchain-community
+langchain-openai
+langgraph
+pinecone-client[grpc]
+langchain-pinecone
+duckduckgo-search
+pypdf
+markdown
+aiohttp
+tiktoken
+typing-extensions

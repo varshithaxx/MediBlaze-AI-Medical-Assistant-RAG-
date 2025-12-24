@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MX Medical AI - Your Health Assistant</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%239a77ff'/><stop offset='100%' style='stop-color:%237f57f1'/></linearGradient></defs><rect width='100' height='100' rx='20' fill='url(%23g)'/><text x='50' y='72' font-family='Inter,sans-serif' font-size='60' font-weight='800' text-anchor='middle' fill='white'>M</text></svg>" />
+    
+    <!-- Google Fonts & Marked.js -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js"></script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-container">
+            <a href="/" class="brand-logo">
+                <div class="logo-letter">M</div>
+                <div class="brand-info">
+                    <div class="brand-name">MX Medical AI</div>
+                    <div class="brand-tagline">Your Health Assistant</div>
+                </div>
+            </a>
+            <div class="header-status">
+                <span class="status-dot"></span>
+                <span>AI Online</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="app-container">
+        <!-- Welcome Card -->
+        <div class="welcome-card">
+            <div class="welcome-header">
+                <div class="welcome-avatar">🏥</div>
+                <div class="welcome-text">
+                    <h1>Welcome to MX Medical AI</h1>
+                    <p>Ask me anything about your health, symptoms, treatments, or wellness. I'm here to provide educational health information powered by medical knowledge.</p>
+                </div>
+            </div>
+            <div class="welcome-disclaimer">
+                <div class="disclaimer-content">
+                    <span class="disclaimer-icon">⚠️</span>
+                    <div class="disclaimer-text">
+                        <strong>Important Disclaimer:</strong> This AI provides educational information only. Always consult qualified healthcare professionals for medical advice, diagnosis, and treatment.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Window -->
+        <div class="chat-window" id="chatWindow">
+            <!-- Messages will be dynamically added here -->
+        </div>
+    </main>
+
+    <!-- Chat Input (Fixed at bottom) -->
+    <div class="chat-input-container">
+        <div class="chat-input-wrapper">
+            <form id="chatForm" class="chat-form">
+                <textarea
+                    id="userMessage"
+                    class="chat-input"
+                    placeholder="Ask about symptoms, treatments, or wellness advice..."
+                    rows="1"
+                    required
+                ></textarea>
+                <button type="submit" class="send-btn" id="sendBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                </button>
+            </form>
+            <div class="quick-prompts">
+                <button class="prompt-chip" onclick="setMessage('What are the symptoms of diabetes?')">💊 Diabetes symptoms</button>
+                <button class="prompt-chip" onclick="setMessage('How to manage stress naturally?')">🧘 Stress management</button>
+                <button class="prompt-chip" onclick="setMessage('What foods are good for heart health?')">❤️ Heart health</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get current time
+        function getCurrentTime() {
+            return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
+        // Scroll to bottom
+        function scrollToBottom() {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        // Render Markdown
+        function renderMarkdown(content) {
+            if (!content) return '';
+            try {
+                marked.setOptions({ breaks: true, gfm: true });
+                return marked.parse(content);
+            } catch (e) {
+                return content.replace(/\n/g, '<br>');
+            }
+        }
+
+        // Add message
+        function addMessage(message, isUser) {
+            const chatWindow = document.getElementById('chatWindow');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            
+            const avatar = isUser 
+                ? `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12ZM12 12C16.4183 12 20 14.0147 20 16.5V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V16.5C4 14.0147 7.58172 12 12 12Z" fill="currentColor"/></svg>`
+                : `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.79167 2H18.2083C19.2 2 20 2.8 20 3.79167V16.2083C20 17.2 19.2 18 18.2083 18H15.25V20.25L12.5 18H5.79167C4.8 18 4 17.2 4 16.2083V3.79167C4 2.8 4.8 2 5.79167 2ZM8.5 11C7.67157 11 7 10.3284 7 9.5C7 8.67157 7.67157 8 8.5 8C9.32843 8 10 8.67157 10 9.5C10 10.3284 9.32843 11 8.5 11ZM15.5 11C14.6716 11 14 10.3284 14 9.5C14 8.67157 14.6716 8 15.5 8C16.3284 8 17 8.67157 17 9.5C17 10.3284 16.3284 11 15.5 11Z" fill="currentColor"/></svg>`;
+            
+            const content = isUser ? message.replace(/</g, '&lt;').replace(/>/g, '&gt;') : renderMarkdown(message);
+            
+            messageDiv.innerHTML = `
+                <div class="message-avatar">${avatar}</div>
+                <div class="message-bubble">
+                    <div class="message-content">${content}</div>
+                    <div class="message-time">${getCurrentTime()}</div>
+                </div>
+            `;
+            
+            chatWindow.appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        // Show typing indicator
+        function showTypingIndicator() {
+            const chatWindow = document.getElementById('chatWindow');
+            const indicator = document.createElement('div');
+            indicator.className = 'message bot-message typing-indicator';
+            indicator.id = 'typingIndicator';
+            indicator.innerHTML = `
+                <div class="message-avatar">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.79167 2H18.2083C19.2 2 20 2.8 20 3.79167V16.2083C20 17.2 19.2 18 18.2083 18H15.25V20.25L12.5 18H5.79167C4.8 18 4 17.2 4 16.2083V3.79167C4 2.8 4.8 2 5.79167 2ZM8.5 11C7.67157 11 7 10.3284 7 9.5C7 8.67157 7.67157 8 8.5 8C9.32843 8 10 8.67157 10 9.5C10 10.3284 9.32843 11 8.5 11ZM15.5 11C14.6716 11 14 10.3284 14 9.5C14 8.67157 14.6716 8 15.5 8C16.3284 8 17 8.67157 17 9.5C17 10.3284 16.3284 11 15.5 11Z" fill="currentColor"/></svg>
+                </div>
+                <div class="message-bubble">
+                    <div class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            `;
+            chatWindow.appendChild(indicator);
+            scrollToBottom();
+        }
+
+        // Remove typing indicator
+        function removeTypingIndicator() {
+            const indicator = document.getElementById('typingIndicator');
+            if (indicator) indicator.remove();
+        }
+
+        // Show tool indicator
+        function showToolIndicator(message) {
+            const chatWindow = document.getElementById('chatWindow');
+            const indicator = document.createElement('div');
+            indicator.className = 'tool-indicator';
+            indicator.id = 'toolIndicator';
+            indicator.innerHTML = `<div class="tool-message">${message}</div>`;
+            chatWindow.appendChild(indicator);
+            scrollToBottom();
+        }
+
+        // Remove tool indicator
+        function removeToolIndicator() {
+            const indicator = document.getElementById('toolIndicator');
+            if (indicator) indicator.remove();
+        }
+
+        // Set message from quick prompt
+        function setMessage(text) {
+            document.getElementById('userMessage').value = text;
+            document.getElementById('userMessage').focus();
+        }
+
+        // Handle form submission
+        const chatForm = document.getElementById('chatForm');
+        const userMessage = document.getElementById('userMessage');
+        const sendBtn = document.getElementById('sendBtn');
+
+        chatForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const message = userMessage.value.trim();
+            if (!message) return;
+            
+            addMessage(message, true);
+            userMessage.value = '';
+            userMessage.disabled = true;
+            sendBtn.disabled = true;
+            
+            showTypingIndicator();
+            
+            try {
+                const response = await fetch('/chat/stream', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message })
+                });
+                
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let accumulatedContent = '';
+                let currentBotMessage = null;
+                
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    
+                    const chunk = decoder.decode(value);
+                    const lines = chunk.split('\n');
+                    
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            try {
+                                const data = JSON.parse(line.slice(6));
+                                
+                                switch (data.type) {
+                                    case 'tool_start':
+                                        removeTypingIndicator();
+                                        showToolIndicator(data.message);
+                                        break;
+                                        
+                                    case 'tool_end':
+                                        removeToolIndicator();
+                                        break;
+                                        
+                                    case 'response_start':
+                                        removeTypingIndicator();
+                                        removeToolIndicator();
+                                        currentBotMessage = document.createElement('div');
+                                        currentBotMessage.className = 'message bot-message';
+                                        currentBotMessage.innerHTML =
+                                            `<div class="message-avatar"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.79167 2H18.2083C19.2 2 20 2.8 20 3.79167V16.2083C20 17.2 19.2 18 18.2083 18H15.25V20.25L12.5 18H5.79167C4.8 18 4 17.2 4 16.2083V3.79167C4 2.8 4.8 2 5.79167 2ZM8.5 11C7.67157 11 7 10.3284 7 9.5C7 8.67157 7.67157 8 8.5 8C9.32843 8 10 8.67157 10 9.5C10 10.3284 9.32843 11 8.5 11ZM15.5 11C14.6716 11 14 10.3284 14 9.5C14 8.67157 14.6716 8 15.5 8C16.3284 8 17 8.67157 17 9.5C17 10.3284 16.3284 11 15.5 11Z" fill="currentColor"/></svg></div>` +
+                                            '<div class="message-bubble">' +
+                                                '<div class="message-content streaming-content"></div>' +
+                                                '<div class="message-time">' + getCurrentTime() + '</div>' +
+                                            '</div>';
+                                        chatWindow.appendChild(currentBotMessage);
+                                        accumulatedContent = '';
+                                        break;
+                                        
+                                    case 'content':
+                                        if (currentBotMessage && data.content) {
+                                            accumulatedContent += data.content;
+                                            const contentElement = currentBotMessage.querySelector('.streaming-content');
+                                            if (contentElement) {
+                                                contentElement.innerHTML = renderMarkdown(accumulatedContent.trim());
+                                                scrollToBottom();
+                                            }
+                                        }
+                                        break;
+                                        
+                                    case 'complete':
+                                        if (currentBotMessage) {
+                                            const contentElement = currentBotMessage.querySelector('.streaming-content');
+                                            if (contentElement) {
+                                                contentElement.classList.remove('streaming-content');
+                                                scrollToBottom();
+                                            }
+                                        }
+                                        break;
+                                }
+                            } catch (e) {
+                                console.error("Error parsing stream data:", e, "Line:", line);
+                            }
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                removeTypingIndicator();
+                removeToolIndicator();
+                addMessage('Sorry, there was an error processing your request. Please try again.', false);
+            } finally {
+                userMessage.disabled = false;
+                sendBtn.disabled = false;
+                userMessage.focus();
+            }
+        });
+
+        // Auto-resize textarea
+        userMessage.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
+
+        // Submit on Enter
+        userMessage.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                chatForm.requestSubmit();
+            }
+        });
+
+        // Focus on load
+        userMessage.focus();
+    </script>
+</body>
+</html>

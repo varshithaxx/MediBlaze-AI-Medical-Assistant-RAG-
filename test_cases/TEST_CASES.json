@@ -1,0 +1,391 @@
+{
+  "test_cases": [
+    {
+      "category": "Headache & Pain",
+      "scenario": "Simple headache complaint",
+      "test_id": "TC001",
+      "conversation": [
+        {
+          "user": "My head is pounding",
+          "expected_behavior": [
+            "Should call rag_tool first to search for headache information",
+            "Should show empathy",
+            "Should ask clarifying questions about duration, severity, location",
+            "Should ask about accompanying symptoms (nausea, light sensitivity)",
+            "Should use 🤕 emoji"
+          ]
+        },
+        {
+          "user": "It started 2 hours ago, pain is 7/10",
+          "expected_behavior": [
+            "Should ask more specific questions about location and triggers",
+            "Should inquire about nausea, light/sound sensitivity",
+            "Should ask about medication history"
+          ]
+        },
+        {
+          "user": "Yes, I feel nauseous and light hurts my eyes",
+          "expected_behavior": [
+            "Should identify potential migraine",
+            "Should provide structured advice with emojis (✅, 💡, ❌, 🚨)",
+            "Should recommend rest in dark room",
+            "Should mention hydration and OTC pain relief",
+            "Should clearly list warning signs to seek help"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Fever & Temperature",
+      "scenario": "Patient with fever",
+      "test_id": "TC002",
+      "conversation": [
+        {
+          "user": "I think I have a fever",
+          "expected_behavior": [
+            "Should call rag_tool for fever information",
+            "Should ask if they've measured temperature",
+            "Should ask about other symptoms (chills, body aches, cough)",
+            "Should ask about duration",
+            "Should use 🤒 emoji"
+          ]
+        },
+        {
+          "user": "102°F, feeling cold, body aches",
+          "expected_behavior": [
+            "Should recognize moderate fever",
+            "Should provide fever management advice with emojis",
+            "Should recommend rest, fluids, temperature monitoring",
+            "Should mention acetaminophen/ibuprofen",
+            "Should list red flags (persistent high fever, difficulty breathing)"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Respiratory Issues",
+      "scenario": "Persistent cough",
+      "test_id": "TC003",
+      "conversation": [
+        {
+          "user": "I can't stop coughing",
+          "expected_behavior": [
+            "Should search RAG for cough information",
+            "Should ask about duration",
+            "Should ask if cough is dry or productive (with mucus)",
+            "Should ask about fever, shortness of breath",
+            "Should ask about recent illnesses or allergies",
+            "Should use 😷 emoji"
+          ]
+        },
+        {
+          "user": "Dry cough for 5 days, no fever, just annoying",
+          "expected_behavior": [
+            "Should suggest possible causes (post-viral, allergies, irritants)",
+            "Should provide home remedies (honey, steam, hydration)",
+            "Should recommend when to see doctor (if persists >2 weeks)",
+            "Should use structured format with ✅ and 💡 emojis"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Digestive Issues",
+      "scenario": "Stomach pain and nausea",
+      "test_id": "TC004",
+      "conversation": [
+        {
+          "user": "My stomach hurts and I feel sick",
+          "expected_behavior": [
+            "Should call rag_tool for digestive issues",
+            "Should ask about pain location and type (sharp, cramping, dull)",
+            "Should ask about nausea, vomiting, diarrhea",
+            "Should ask about recent food intake",
+            "Should ask about fever",
+            "Should use 🤢 emoji"
+          ]
+        },
+        {
+          "user": "Cramping pain around belly button, ate seafood yesterday",
+          "expected_behavior": [
+            "Should consider food poisoning possibility",
+            "Should ask about vomiting, diarrhea, fever",
+            "Should emphasize hydration",
+            "Should provide BRAT diet suggestions",
+            "Should list emergency signs (severe pain, bloody stool, high fever)"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Mental Health",
+      "scenario": "Anxiety and sleep issues",
+      "test_id": "TC005",
+      "conversation": [
+        {
+          "user": "I can't sleep and feel anxious all the time",
+          "expected_behavior": [
+            "Should search RAG for anxiety/sleep information",
+            "Should show empathy and understanding",
+            "Should ask about duration and triggers",
+            "Should ask about physical symptoms (racing heart, sweating)",
+            "Should ask about recent life changes or stressors",
+            "Should use 🧠 or 😴 emojis"
+          ]
+        },
+        {
+          "user": "Past 3 weeks, work stress, heart races at night",
+          "expected_behavior": [
+            "Should validate their experience",
+            "Should provide sleep hygiene tips",
+            "Should suggest relaxation techniques",
+            "Should recommend professional help (therapist, counselor)",
+            "Should use supportive tone with 💡 and ✅ emojis"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Emergency Scenarios",
+      "scenario": "Chest pain (urgent)",
+      "test_id": "TC006",
+      "conversation": [
+        {
+          "user": "I have chest pain",
+          "expected_behavior": [
+            "Should IMMEDIATELY ask about severity and nature",
+            "Should ask about radiation to arm/jaw/back",
+            "Should ask about shortness of breath, sweating",
+            "Should ask if pain is sudden or comes with exertion",
+            "Should use ⚠️ emoji prominently"
+          ]
+        },
+        {
+          "user": "Tight feeling, radiating to left arm, started suddenly",
+          "expected_behavior": [
+            "Should IMMEDIATELY recommend calling emergency services (911)",
+            "Should use 🚨 emoji very prominently",
+            "Should advise NOT to drive themselves",
+            "Should mention chewing aspirin if no allergies (while waiting)",
+            "Should prioritize emergency response over gathering more info"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Medication Queries",
+      "scenario": "Asking about medication",
+      "test_id": "TC007",
+      "conversation": [
+        {
+          "user": "What's the difference between ibuprofen and acetaminophen?",
+          "expected_behavior": [
+            "Should search RAG for medication information",
+            "Should explain both are pain relievers",
+            "Should clarify ibuprofen = anti-inflammatory, acetaminophen = not",
+            "Should mention use cases for each",
+            "Should use 💊 emoji",
+            "Should mention consulting doctor/pharmacist for personal use"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Preventive Health",
+      "scenario": "Asking about prevention",
+      "test_id": "TC008",
+      "conversation": [
+        {
+          "user": "How can I prevent getting sick during flu season?",
+          "expected_behavior": [
+            "Should search RAG for prevention strategies",
+            "Should provide structured list with ✅ emojis",
+            "Should mention flu vaccine",
+            "Should cover hygiene practices (handwashing, avoiding face touching)",
+            "Should mention lifestyle factors (sleep, nutrition, exercise)",
+            "Should suggest immune-supporting habits"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Chronic Condition Management",
+      "scenario": "Diabetes management question",
+      "test_id": "TC009",
+      "conversation": [
+        {
+          "user": "I have type 2 diabetes, my blood sugar was 180 this morning",
+          "expected_behavior": [
+            "Should search RAG for diabetes information",
+            "Should ask about their usual range and medication",
+            "Should ask about what they ate and when they tested",
+            "Should ask if they've been sick or stressed",
+            "Should provide context-appropriate advice",
+            "Should emphasize following their doctor's plan"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Pediatric Health",
+      "scenario": "Child health concern",
+      "test_id": "TC010",
+      "conversation": [
+        {
+          "user": "My 3-year-old has a fever of 101°F",
+          "expected_behavior": [
+            "Should identify pediatric scenario",
+            "Should ask about child's behavior (playful vs lethargic)",
+            "Should ask about other symptoms",
+            "Should ask about duration",
+            "Should provide age-appropriate advice",
+            "Should mention when to call pediatrician",
+            "Should be extra cautious with young children"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Follow-up & Memory Test",
+      "scenario": "Testing conversation memory",
+      "test_id": "TC011",
+      "conversation": [
+        {
+          "user": "I have a headache",
+          "expected_behavior": [
+            "Should ask diagnostic questions"
+          ]
+        },
+        {
+          "user": "It's on the right side, throbbing, 8/10 pain",
+          "expected_behavior": [
+            "Should continue asking relevant questions"
+          ]
+        },
+        {
+          "user": "Also, what should I eat?",
+          "expected_behavior": [
+            "Should remember the headache context",
+            "Should provide diet advice relevant to headaches",
+            "Should mention avoiding triggers like caffeine, alcohol, certain foods",
+            "Should maintain context from previous messages"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Multi-symptom Scenario",
+      "scenario": "Multiple symptoms reported",
+      "test_id": "TC012",
+      "conversation": [
+        {
+          "user": "I have a sore throat, stuffy nose, and feel tired",
+          "expected_behavior": [
+            "Should recognize common cold symptoms",
+            "Should ask about fever, duration, cough",
+            "Should provide comprehensive advice covering all symptoms",
+            "Should use multiple relevant emojis (😷, 💧, 🛌)",
+            "Should structure response clearly with sections for each symptom"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Vague Complaint",
+      "scenario": "Non-specific symptoms",
+      "test_id": "TC013",
+      "conversation": [
+        {
+          "user": "I just don't feel well",
+          "expected_behavior": [
+            "Should ask open-ended questions to narrow down",
+            "Should ask about specific symptoms (pain, nausea, fatigue, etc.)",
+            "Should ask about duration",
+            "Should ask what feels different than usual",
+            "Should be patient and thorough in gathering information"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Lifestyle & Wellness",
+      "scenario": "General health improvement",
+      "test_id": "TC014",
+      "conversation": [
+        {
+          "user": "I want to improve my overall health",
+          "expected_behavior": [
+            "Should ask about their current lifestyle",
+            "Should inquire about specific goals",
+            "Should provide structured advice on diet, exercise, sleep",
+            "Should use 🏃, 🥗, 🛌 emojis appropriately",
+            "Should be encouraging and practical"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Injury Assessment",
+      "scenario": "Potential sprain/strain",
+      "test_id": "TC015",
+      "conversation": [
+        {
+          "user": "I twisted my ankle playing basketball",
+          "expected_behavior": [
+            "Should ask about ability to bear weight",
+            "Should ask about swelling, bruising, deformity",
+            "Should ask about pain level",
+            "Should mention RICE protocol (Rest, Ice, Compression, Elevation)",
+            "Should use 🤕 emoji",
+            "Should advise when to get X-ray (severe pain, can't walk)"
+          ]
+        }
+      ]
+    }
+  ],
+  "testing_notes": {
+    "how_to_test": [
+      "1. Open the MediBlaze application in your browser",
+      "2. For each test case, enter the user messages in order",
+      "3. Check if the bot's responses match the expected behaviors",
+      "4. Verify RAG tool is being called (check server logs for 'rag_tool' invocations)",
+      "5. Confirm emojis are present and enhance readability",
+      "6. Ensure conversation context is maintained across messages"
+    ],
+    "what_to_verify": [
+      "✅ RAG tool is called at the start of each conversation",
+      "✅ Emojis are used strategically (not overused)",
+      "✅ Responses are structured with clear sections",
+      "✅ Bot asks questions before giving advice",
+      "✅ Conversation memory works (bot remembers previous messages)",
+      "✅ Emergency scenarios trigger immediate urgent advice",
+      "✅ Bot shows empathy and warmth",
+      "✅ Medical advice is evidence-based from RAG knowledge"
+    ],
+    "common_issues_to_check": [
+      "❌ Bot gives generic answers without asking questions",
+      "❌ RAG tool not being invoked (check logs)",
+      "❌ No emojis or poor formatting",
+      "❌ Bot forgets previous conversation context",
+      "❌ Emergency scenarios not handled urgently enough",
+      "❌ Too much medical jargon without explanation"
+    ]
+  },
+  "quick_test_prompts": [
+    "My head hurts",
+    "I think I have a fever",
+    "I can't stop coughing",
+    "My stomach hurts",
+    "I feel anxious",
+    "I have chest pain",
+    "What's ibuprofen for?",
+    "How do I prevent flu?",
+    "My blood sugar is high",
+    "My kid has a fever",
+    "I don't feel well",
+    "I want to be healthier",
+    "I twisted my ankle",
+    "I'm having trouble sleeping",
+    "Do I have COVID?"
+  ]
+}
