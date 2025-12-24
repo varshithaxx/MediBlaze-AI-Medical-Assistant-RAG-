@@ -22,29 +22,40 @@ Testing: JSON-based API test cases
 
 2.Create & activate virtual environment
 
-````python -m venv venv````
-````.\venv\Scripts\Activate````
+````bash
+python -m venv venv
+.\venv\Scripts\Activate
+````
 
 3.Install dependencies
 
-````pip install -r requirements.txt````
+````bash
+pip install -r requirements.txt
+````
 
 4.Configure environment variables
 
 PINECONE_API_KEY=your_key
+
 GITHUB_TOKEN=your_token
 
 5.Setup Pinecone index
 
-````python setup_pinecone.py````
+````bash
+python setup_pinecone.py
+````
 
 6.Upload documents for RAG
 
 7.Run the application
 
-````python main.py````
+````bash
+python main.py
+````
 # Run with Docker
-````docker-compose up --build````
+````bash
+docker-compose up --build
+````
 # Output Image
 <img width="1562" height="997" alt="image" src="https://github.com/user-attachments/assets/021811e1-07c0-46a4-aae8-b8d67b1df340" />
 
